@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Seo from "../components/Seo";
 
@@ -17,6 +19,23 @@ export default function Home({ results }) {
   //     setMovies(results);
   //   })();
   // }, []);
+  const router = useRouter();
+  const onClick = (id, title) => {
+    router.push(
+      {
+        pathname: `/movies/${id}`,
+        query: {
+          title,
+        },
+      },
+      // router.push의 두 번째 인자 as. as는 브라우저에 표시할 url을 설정할 수 있다.
+      `/movies/${id}`
+    );
+  };
+  // const onClick = (id) => {
+  //   router.push(`/movies/${id}`);
+  // };
+
   return (
     <div className="container">
       <Seo title="Home" />
@@ -24,9 +43,28 @@ export default function Home({ results }) {
       {movies?.map((movie) => ( */}
       {!results && <h4>Loading...</h4>}
       {results?.map((movie) => (
-        <div className="movie" key={movie.id}>
+        <div
+          onClick={() => onClick(movie.id, movie.original_title)}
+          className="movie"
+          key={movie.id}
+        >
           <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
-          <h4>{movie.original_title}</h4>
+          <h4>
+            {/* <Link href={`/movies/${movie.id}`}> */}
+            <Link
+              href={
+                ({
+                  pathname: `/movies/${movie.id}`,
+                  query: {
+                    title: movie.original_title,
+                  },
+                },
+                `/movies/${movie.id}`)
+              }
+            >
+              <a>{movie.original_title}</a>
+            </Link>
+          </h4>
         </div>
       ))}
       <style jsx>{`
