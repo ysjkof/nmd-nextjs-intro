@@ -21,16 +21,19 @@ export default function Home({ results }) {
   // }, []);
   const router = useRouter();
   const onClick = (id, title) => {
-    router.push(
-      {
-        pathname: `/movies/${id}`,
-        query: {
-          title,
-        },
-      },
-      // router.push의 두 번째 인자 as. as는 브라우저에 표시할 url을 설정할 수 있다.
-      `/movies/${id}`
-    );
+    // ex) 마스킹 사용
+    // router.push(
+    //   {
+    //     pathname: `/movies/${id}`,
+    //     query: {
+    //       title,
+    //     },
+    //   },
+    // router.push의 두 번째 인자 as. as는 브라우저에 표시할 url을 설정할 수 있다.
+    // `/movies/${id}`
+    // );
+    // ex) 마스킹 안사용
+    router.push(`/movies/${title}/${id}`);
   };
   // const onClick = (id) => {
   //   router.push(`/movies/${id}`);
@@ -51,17 +54,7 @@ export default function Home({ results }) {
           <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
           <h4>
             {/* <Link href={`/movies/${movie.id}`}> */}
-            <Link
-              href={
-                ({
-                  pathname: `/movies/${movie.id}`,
-                  query: {
-                    title: movie.original_title,
-                  },
-                },
-                `/movies/${movie.id}`)
-              }
-            >
+            <Link href={`/movies/${movie.original_title}/${movie.id}`}>
               <a>{movie.original_title}</a>
             </Link>
           </h4>
